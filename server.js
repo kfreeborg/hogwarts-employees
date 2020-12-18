@@ -1,4 +1,31 @@
-console.log('Im working');
+const mysql = require('mysql2/promise');
+
+const connect = async () => {
+  const connection = await mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    // Your MySQL username
+    user: 'root',
+    // Your MySQL password
+    password: 'password',
+    database: 'hogwarts_db',
+  });
+  console.log('connected as id ' + connection.threadId);
+  return connection;
+};
+
+const run = async () => {
+  //open a connection
+  const connection = await connect();
+  //create a product
+  //update a product
+  //delete a product
+  //read products
+  //close connection
+  connection.end();
+};
+
+run();
 
 // GIVEN a command-line application that accepts user input
 // WHEN I start the application

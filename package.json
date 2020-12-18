@@ -44,5 +44,8 @@
       "no-var": "error",
       "prefer-const": "error"
     }
+  },
+  "dependencies": {
+    "mysql2": "^2.2.5"
   }
 }
