@@ -1,20 +1,61 @@
 const mysql = require('mysql2/promise');
 const inquirer = require('inquirer');
+const cTable = require('console.table');
 
-inquirer
-  .prompt([
-    /* Pass your questions in here */
-  ])
-  .then(answers => {
-    // Use user feedback for... whatever!!
-  })
-  .catch(error => {
-    if (error.isTtyError) {
-      // Prompt couldn't be rendered in the current environment
-    } else {
-      // Something else when wrong
-    }
-  });
+const action = async () => {
+  inquirer
+    .prompt({
+      type: 'list',
+      choices: [
+        'Add department',
+        'Add role',
+        'Add employee',
+        'View departments',
+        'View roles',
+        'View employees',
+        'Update employee role',
+        'Quit',
+      ],
+      message: 'What would you like to do?',
+      name: 'option',
+    })
+    .then(answers => {
+      console.log('You entered: ' + answers.option);
+
+      // switch (answers.option) {
+      //   case 'Add department':
+      //     addDepartment();
+      //     break;
+      //   case 'Add role':
+      //     addRole();
+      //     break;
+      //   case 'Add employee':
+      //     addEmployee();
+      //     break;
+      //   case 'View departments':
+      //     viewDepartment();
+      //     break;
+      //   case 'View roles':
+      //     viewRoles();
+      //     break;
+      //   case 'View employees':
+      //     viewEmployees();
+      //     break;
+      //   case 'Update employee role':
+      //     updateEmployee();
+      //     break;
+      //   default:
+      //     quit();
+      // }
+    })
+    .catch(error => {
+      if (error.isTtyError) {
+        // Prompt couldn't be rendered in the current environment
+      } else {
+        // Something else when wrong
+      }
+    });
+};
 
 const connect = async () => {
   const connection = await mysql.createConnection({
@@ -31,7 +72,8 @@ const connect = async () => {
 const run = async () => {
   //open a connection
   const connection = await connect();
-  //create a product
+  //ask questions
+  await action();
   //update a product
   //delete a product
   //read products
