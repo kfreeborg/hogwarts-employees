@@ -1,12 +1,26 @@
 const mysql = require('mysql2/promise');
+const inquirer = require('inquirer');
+
+inquirer
+  .prompt([
+    /* Pass your questions in here */
+  ])
+  .then(answers => {
+    // Use user feedback for... whatever!!
+  })
+  .catch(error => {
+    if (error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      // Something else when wrong
+    }
+  });
 
 const connect = async () => {
   const connection = await mysql.createConnection({
     host: 'localhost',
     port: 3306,
-    // Your MySQL username
     user: 'root',
-    // Your MySQL password
     password: 'password',
     database: 'hogwarts_db',
   });
