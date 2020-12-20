@@ -43,9 +43,9 @@ const mainMenu = () => {
         case 'View roles':
           viewRoles();
           break;
-        //   case 'View employees':
-        //     viewEmployees();
-        //     break;
+        case 'View employees':
+          viewEmployees();
+          break;
         //   case 'Add department':
         //     addDepartment();
         //     break;
@@ -76,6 +76,15 @@ const viewDepartment = () => {
 const viewRoles = () => {
   console.log('Viewing departments');
   connection.query('SELECT * FROM role', function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    mainMenu();
+  });
+};
+
+const viewEmployees = () => {
+  console.log('Viewing departments');
+  connection.query('SELECT * FROM employee', function (err, res) {
     if (err) throw err;
     console.table(res);
     mainMenu();
