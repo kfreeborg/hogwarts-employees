@@ -1,18 +1,32 @@
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 
-const action = async () => {
+const connection = mysql.createConnection({
+  host: 'localhost',
+  port: 3306,
+  user: 'root',
+  password: 'password',
+  database: 'hogwarts_db',
+});
+
+connection.connect(err => {
+  if (err) throw err;
+  console.log('connected as id ' + connection.threadId);
+  mainMenu();
+});
+
+const mainMenu = () => {
   inquirer
     .prompt({
       type: 'list',
       choices: [
-        'Add department',
-        'Add role',
-        'Add employee',
         'View departments',
         'View roles',
         'View employees',
+        'Add department',
+        'Add role',
+        'Add employee',
         'Update employee role',
         'Quit',
       ],
@@ -22,66 +36,51 @@ const action = async () => {
     .then(answers => {
       console.log('You entered: ' + answers.option);
 
-      // switch (answers.option) {
-      //   case 'Add department':
-      //     addDepartment();
-      //     break;
-      //   case 'Add role':
-      //     addRole();
-      //     break;
-      //   case 'Add employee':
-      //     addEmployee();
-      //     break;
-      //   case 'View departments':
-      //     viewDepartment();
-      //     break;
-      //   case 'View roles':
-      //     viewRoles();
-      //     break;
-      //   case 'View employees':
-      //     viewEmployees();
-      //     break;
-      //   case 'Update employee role':
-      //     updateEmployee();
-      //     break;
-      //   default:
-      //     quit();
-      // }
-    })
-    .catch(error => {
-      if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
-      } else {
-        // Something else when wrong
+      switch (answers.option) {
+        case 'View departments':
+          viewDepartment();
+          break;
+        case 'View roles':
+          viewRoles();
+          break;
+        //   case 'View employees':
+        //     viewEmployees();
+        //     break;
+        //   case 'Add department':
+        //     addDepartment();
+        //     break;
+        //   case 'Add role':
+        //     addRole();
+        //     break;
+        //   case 'Add employee':
+        //     addEmployee();
+        //     break;
+        //   case 'Update employee role':
+        //     updateEmployee();
+        //     break;
+        default:
+          connection.end();
       }
     });
 };
 
-const connect = async () => {
-  const connection = await mysql.createConnection({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: 'password',
-    database: 'hogwarts_db',
+const viewDepartment = () => {
+  console.log('Viewing departments');
+  connection.query('SELECT * FROM department', function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    mainMenu();
   });
-  console.log('connected as id ' + connection.threadId);
-  return connection;
 };
 
-const run = async () => {
-  //open a connection
-  const connection = await connect();
-  //ask questions
-  await action();
-  //update a product
-  //delete a product
-  //read products
-  //close connection
-  connection.end();
+const viewRoles = () => {
+  console.log('Viewing departments');
+  connection.query('SELECT * FROM role', function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    mainMenu();
+  });
 };
-
-run();
 
 // GIVEN a command-line application that accepts user input
 // WHEN I start the application

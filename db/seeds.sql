@@ -26,4 +26,4 @@ VALUES
 ('Poppy', 'Pomfrey', 5, 1),
 ('Argus', 'Filtch', 6, 1),
 ('Bloody', 'Baron', 7, null),
-('Rowena', 'Ravenclaw', 8, null);
+('Rowena', 'Ravenclaw', 8, null); 
