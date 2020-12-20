@@ -46,9 +46,9 @@ const mainMenu = () => {
         case 'View employees':
           viewEmployees();
           break;
-        //   case 'Add department':
-        //     addDepartment();
-        //     break;
+        case 'Add department':
+          addDepartment();
+          break;
         //   case 'Add role':
         //     addRole();
         //     break;
@@ -65,7 +65,6 @@ const mainMenu = () => {
 };
 
 const viewDepartment = () => {
-  console.log('Viewing departments');
   connection.query('SELECT * FROM department', function (err, res) {
     if (err) throw err;
     console.table(res);
@@ -74,7 +73,6 @@ const viewDepartment = () => {
 };
 
 const viewRoles = () => {
-  console.log('Viewing departments');
   connection.query('SELECT * FROM role', function (err, res) {
     if (err) throw err;
     console.table(res);
@@ -83,12 +81,41 @@ const viewRoles = () => {
 };
 
 const viewEmployees = () => {
-  console.log('Viewing departments');
   connection.query('SELECT * FROM employee', function (err, res) {
     if (err) throw err;
     console.table(res);
     mainMenu();
   });
+};
+
+const addDepartment = () => {
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'addDept',
+        message: 'What is the name of the new department?',
+        validate: addDept => {
+          if (addDept) {
+            return true;
+          } else {
+            console.log('Please enter a department.');
+            return false;
+          }
+        },
+      },
+    ])
+    .then(answer => {
+      connection.query(
+        'INSERT INTO department (name) VALUES (?)',
+        [answer.addDept],
+        function (err, res) {
+          if (err) throw err;
+          console.log(res.affectedRows + ' department inserted!');
+          mainMenu();
+        }
+      );
+    });
 };
 
 // GIVEN a command-line application that accepts user input
