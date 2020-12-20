@@ -49,9 +49,9 @@ const mainMenu = () => {
         case 'Add department':
           addDepartment();
           break;
-        //   case 'Add role':
-        //     addRole();
-        //     break;
+        case 'Add role':
+          addRole();
+          break;
         //   case 'Add employee':
         //     addEmployee();
         //     break;
@@ -95,14 +95,6 @@ const addDepartment = () => {
         type: 'input',
         name: 'addDept',
         message: 'What is the name of the new department?',
-        validate: addDept => {
-          if (addDept) {
-            return true;
-          } else {
-            console.log('Please enter a department.');
-            return false;
-          }
-        },
       },
     ])
     .then(answer => {
@@ -112,6 +104,38 @@ const addDepartment = () => {
         function (err, res) {
           if (err) throw err;
           console.log(res.affectedRows + ' department inserted!');
+          mainMenu();
+        }
+      );
+    });
+};
+
+const addRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        message: 'What is the name of the new role?',
+        name: 'roleName',
+      },
+      {
+        type: 'input',
+        message: 'What is the salary for this role?',
+        name: 'salaryTotal',
+      },
+      {
+        type: 'input',
+        message: 'What is the department id number?',
+        name: 'deptID',
+      },
+    ])
+    .then(answer => {
+      connection.query(
+        'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)',
+        [answer.roleName, answer.salaryTotal, answer.deptID],
+        function (err, res) {
+          if (err) throw err;
+          console.log(res.affectedRows + ' role inserted!');
           mainMenu();
         }
       );
