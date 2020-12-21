@@ -55,9 +55,9 @@ const mainMenu = () => {
         case 'Add employee':
           addEmployee();
           break;
-        //   case 'Update employee role':
-        //     updateEmployee();
-        //     break;
+        case 'Update employee role':
+          updateEmployee();
+          break;
         default:
           connection.end();
       }
@@ -173,6 +173,33 @@ const addEmployee = () => {
         function (err, res) {
           if (err) throw err;
           console.log(res.affectedRows + ' employee inserted!');
+          mainMenu();
+        }
+      );
+    });
+};
+
+const updateEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        name: 'id',
+        type: 'input',
+        message: 'Enter employee id.',
+      },
+      {
+        name: 'roleId',
+        type: 'input',
+        message: 'Enter role id',
+      },
+    ])
+    .then(answer => {
+      connection.query(
+        'UPDATE employee SET role_id=? WHERE id=?',
+        [answer.roleId, answer.id],
+        function (err, res) {
+          if (err) throw err;
+          console.log(res.affectedRows + ' employee updated!');
           mainMenu();
         }
       );
